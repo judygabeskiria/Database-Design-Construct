@@ -1,0 +1,94 @@
+1) Select from Database:
+  SELECT col1, col2, 
+  FROM tablename;
+2) Select all:
+  SELECT *
+  From tablename;
+3) Select different values:
+  SELECT DISTINCT col1,
+  FROM tablename;
+4) Choose condition:
+  SELECT col1, col2
+  FROM tablename
+  WHERE condition;
+5) and, or, not:
+  SELECT col1, col2
+  FROM tablename
+  WHERE cond1 AND cond2 OR cond3 NOT cond4;
+6) Order
+  SELECT col1, col2
+  FROM tablename
+  ORDER BY cond1 ASC|DESC;
+7) Insert new lines
+  INSERT INTO tablename (col1,col2..)
+  VALUES (val1,val2...)
+8) NULL VALUE=no value:
+  SELECT columnnames
+  FROM tablename
+  WHERE columname IS NULL|IS NOT NULL;
+9) update values:
+  UPDATE tablename
+  SET col1=val1, col2=val2
+  WHERE condition;
+10) delete:
+  DELETE FROM tablename
+  WHERE condition;
+11) specify number of tuples to show
+  SELECT columnnnames
+  FROM tablename
+  WHERE condition
+  LIMIT number;
+12) min and max:
+  SELECT MIN|MAX(columnname)
+  FROM tablename
+  WHERE condition;
+13) count number of rows with specified condition, average value of a column, and sum of a column:
+  SELECT COUNT|AVG|SUM(columnname)
+  FROM tablename
+  WHERE condition
+14) search for a pattern in a clomun:
+  SELECT col1, col2...
+  FROM tablename
+  WHERE columN LIKE patter('%'-zero, one, or multiple characters; '_'-one character);
+15) use multiple values in where clause:
+  SELECT columnnames
+  FROM tablename
+  WHERE columnname IN (val1, val2...);
+16)values within a given range
+  SELECT columnames
+  FROM tablename
+  WHERE columname BETWEEN val1 AND val2;
+17) Aliases for temporary names
+  SELECT columnname AS newname
+  FROM tablename;
+18) matching values in both tables:
+  SELECT columnnames
+  FROM table1 INNER JOIN table2 ON table1.columnname=table2.columnname;
+19) all records from left table and matched records from the right:
+  SELECT columnnames
+  FROM table1 
+  LEFT JOIN table2 ON table1.columnname=table2.columnname;
+20) all records from right table and matched records from the left:
+  SELECT columnnames
+  FROM table1 
+  RIGHT JOIN table2 ON table1.columnname=table2.columnname;
+21) match either from left table or from the right:
+  SELECT columnnames
+  FROM table1 
+  FULL OUTER JOIN table2 ON table1.columnname=table2.columnname;
+22) combine statemments:
+  SELECT columnmames 
+  FROM table1
+  UNION
+  SELECT columnnames
+  FROM table2
+23) check if exists in subquery
+  SELECT columnnames
+  FROM tablename
+  WHERE EXISTS (SELECT columnname FROM tablename WHERE condition);
+24) copying from one table into another:
+  SELECT columnnames 
+  INTO table2 (IN 'otherdatabase')
+  FROM table1
+  WHERE condition;
+  
