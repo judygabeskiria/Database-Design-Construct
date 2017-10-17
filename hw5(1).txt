@@ -1,0 +1,156 @@
+6.2.2
+a)
+mysql> select Product.maker, Laptop.speed
+    -> from Product, Laptop
+    -> where Laptop.ram>30 and Product.model=Laptop.model;
++-------+-------+
+| maker | speed |
++-------+-------+
+| E     |  2.00 |
+| E     |  1.73 |
+| E     |  1.80 |
+| A     |  2.00 |
+| A     |  2.16 |
+| A     |  2.00 |
+| B     |  1.83 |
+| F     |  1.60 |
+| F     |  1.60 |
+| G     |  2.00 |
++-------+-------+
+b)mysql> (select Product. model, price from Product, PC where Product.model=PC.model and Product.maker='B') union (select Product.model, price from Product, Laptop where Product.model=Laptop.model and Product.maker='B')union(select Product.model, price from Product, Printer where Product.model=Printer.model and Product.maker='B')
+    -> ;
++-------+---------+
+| model | price   |
++-------+---------+
+| 1004  |  649.00 |
+| 1005  |  630.00 |
+| 1006  | 1049.00 |
+| 2007  | 1429.00 |
++-------+---------+
+c)mysql> select Product.maker from Product, Laptop where Product.model=Laptop.model and not exists (select Product.maker from Product, PC where Product.model=PC.model);
+Empty set (0.00 sec)
+d)mysql> select P1.hd, P2.hd
+    -> from PC P1, PC P2
+    -> where P1.hd=P2.hd and P1.model!=P2.model;
++------+------+
+| hd   | hd   |
++------+------+
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|   80 |   80 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  250 |  250 |
+|  160 |  160 |
+|  160 |  160 |
+|   80 |   80 |
+| 2000 | 2000 |
+| 2000 | 2000 |
++------+------+
+e)mysql> select P1.model, P2.model
+    -> from PC P1, PC P2
+    -> where P1.model<P2.model and P1.speed=P2.speed and P1.ram=P2.ram;
++-------+-------+
+| model | model |
++-------+-------+
+| 1004  | 1012  |
+f) SELECT R1.maker
+FROM( (SELECT maker, PC.model AS model, speed FROM Product, PC WHERE Product.model=PC.model speed>=3) UNION (SELECT maker, Laptop.model AS model, speed FROM Product, Laptop WHERE Product.model=Laptop.model speed>=3)) R1
+    CROSS JOIN ( (SELECT maker, PC.model AS model, speed FROM Product, PC WHERE Product.model=PC.model speed>=3) UNION (SELECT maker, Laptop.model AS model, speed FROM Product, Laptop WHERE Product.model=Laptop.model speed>=3)) R2
+WHERE R1.maker=R2.maker AND R1.model=R2.model AND R1.speed>=3 AND R2.speed>=3;    
+
+
+
+
+
+
+
+6.2.3
+a)mysql> select name from Ships, Classes where Classes.class=Ships.class and displacement>35000;
++----------------+
+| name           |
++----------------+
+| Iowa           |
+| Missouri       |
+| Musashi        |
+| New Jersey     |
+| North Carolina |
+| Washington     |
+| Wisconsin      |
+| Yamato         |
++----------------+
+b)mysql> select Ships.name, numGuns, displacement from Classes, Ships, Outcomes where Classes.class=Ships.class and Outcomes.ship=Ships.name and Outcomes.battle='Guadalcanal';
++------------+---------+--------------+
+| name       | numGuns | displacement |
++------------+---------+--------------+
+| Washington |       9 |        37000 |
+| Kirishima  |       8 |        32000 |
++------------+---------+--------------+
+c)mysql> (select name from Ships) union (select ship as name from Outcomes);
++-----------------+
+| name            |
++-----------------+
+| California      |
+| Haruna          |
+| Hiei            |
+| Iowa            |
+| Kirishima       |
+| Kongo           |
+| Missouri        |
+| Musashi         |
+| New Jersey      |
+| North Carolina  |
+| Ramillies       |
+| Renown          |
+| Repulse         |
+| Resolution      |
+| Revenge         |
+| Royal Oak       |
+| Royal Sovereign |
+| Tennessee       |
+| Washington      |
+| West Virginia   |
+| Wisconsin       |
+| Yamato          |
+| Arizona         |
+| Bismark         |
+| Duke of York    |
+| Fuso            |
+| Hood            |
+| King George V   |
+| Prince of Wales |
+| Rodney          |
+| Scharnhorst     |
+| South Dakota    |
+| Yamashiro       |
++-----------------+
+d)SELECT C1.country
+FROM Classes C1, Classes C2
+WHERE C1.country=C2.country AND C1.type='bb' AND C2.type='bc';
+e)select B1.name from Battles B1, Battles B2, Outcomes O1, Outcomes O2 where B1.name=O1.ship and B1.name=B2.name and O1.ship=O2.ship and O1.result='damaged' and B1.date<B2.date;
+Empty set
