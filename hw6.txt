@@ -1,0 +1,89 @@
+a) SELECT COUNT(*)
+	FROM Classes
+	WHERE type='bb’;
++----------+
+| COUNT(*) |
++----------+
+|        6 |
++----------+
+b) SELECT AVG(numGuns)
+	FROM Classes
+	WHERE type='bb’;
++--------------+
+| AVG(numGuns) |
++--------------+
+|       9.0000 |
++--------------+
+c) SELECT AVG(C1.numGuns)
+	FROM Classes C1 INNER JOIN Ships S1 ON (C1.class=S1.class)
+	WHERE C1.type='bb’;
++--------------+
+| AVG(numGuns) |
++--------------+
+|            9 |
++--------------+
+d) SELECT class, launched
+	FROM Ships AS S1
+	WHERE launched<=ALL(SELECT year
+						FROM Ships AS S2
+						WHERE S2.class=S1.class);
+						
+   or
+   SELECT MIN(launched), C1.class
+   FROM Ships S1, Classes C1
+	WHERE C1.class=S1.class
+   GROUP BY C1.class;
++----------------+----------+
+| class          | launched |
++----------------+----------+
+| Iowa           |     1943 |
+| Kongo          |     1913 |
+| North Carolina |     1941 |
+| Renown         |     1916 |
+| Revenge        |     1916 |
+| Tennessee      |     1920 |
+| Yamato         |     1941 |
++----------------+----------+
+e) SELECT COUNT(Ship)
+	FROM Classes, Ships, Outcomes
+	WHERE Classes.class=Ships.class AND Ships.name=Outcomes.ship AND Outcomes.result='sunk'
+	GROUP BY Classes
++-------------+
+| COUNT(Ship) |
++-------------+
+|           1 |
++-------------+
+f) mysql> select class
+    -> from Ships
+    -> group by class having count(*)>=3;
++---------+
+| class   |
++---------+
+| Iowa    |
+| Kongo   |
+| Revenge |
++---------+
+SELECT COUNT(ship), class
+FROM Outcomes, Ships
+WHERE Outcomes.ship=Ships.name AND result='sunk' AND class IN (SELECT class FROM Ships GROUP BY class HAVING COUNT(*)>=3)
+GROUP BY class
++-------------+-------+
+| COUNT(ship) | class |
++-------------+-------+
+|           1 | Kongo |
++-------------+-------+
+g) SELECT AVG(bore*bore*bore/2)
+	FROM Classes, Ships
+	WHERE Classes.class=Ships.class
+	GROUP BY country;
+	
++-----------------------+
+| AVG(bore*bore*bore/2) |
++-----------------------+
+|      1687.50000000000 |
+|      1886.66666666667 |
+|      1879.00000000000 |
++-----------------------+
+	
+	
+	
