@@ -1,0 +1,58 @@
+HW7
+
+6.6.1
+
+a) SET TRANSACTION READ ONLY;
+BEGIN TRANSACTION;
+SELECT model, price
+FROM PC
+WHERE speed=$speed AND ram=$ram;
+For all (model, price)
+Print (model, price);
+COMMIT;
+b) DeleteModel($model)
+BEGIN TRANSACTION;
+DELETE FROM PC, Product
+WHERE model=$model;
+COMMIT;
+c)DecreasePrice($model)
+DecreasePrice($model)
+BEGIN TRANSACTION;
+UPDATE PC
+SET price=price-100
+WHERE PC.model=$model;
+COMMIT;
+d)InsertPC ($model, $maker, $speed, $ram, $hd, $price)
+BEGIN TRANSACTION;
+SELECT *
+FROM Product
+WHERE model = $model;
+IF query result empty THEN
+INSERT INTO Product
+VALUES ($model, $maker, “PC”);
+INSERT INTO PC
+VALUES ($model, $speed, $ram, $hd, $price);
+ELSE
+Print “PC model exists already”;
+COMMIT;
+
+6.6.2
+Atomic property of a transaction means that queries are not executed partially,
+they are either all of them executed or none. 
+a) I don't think there will be problems with atomicity with this part because, 
+transaction to be completed needs one operation: to print the model and price. 
+It is also read only, so as soon as it receives speed and ram information, it will
+simply look up in PC and print.
+b) This part also has one section to delete from both PC and Product, but it might
+happen that it does not delete from one table and deletes another, that would be
+problem of atomicity.
+c)This one also performs one action, which is to decrease the price of product of
+given model. So as soon as the information will be received program will lookup
+and change the price. Since there is only one performation, no action would
+be left out.
+d) If the system crashes in the middle of an execution of the program, we will
+encounter atomic problems, because this transaction consists of series of actions:
+it first checks given the information if there is such product, if that's the case then it should
+print an error message. But program cannot stop here because if there is no such product than it should add
+into database, so the first part without the second or other way around would not make sense,
+and both should be executed accordingly. 
